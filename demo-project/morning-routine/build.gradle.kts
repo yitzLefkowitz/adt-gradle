@@ -1,36 +1,68 @@
 // dependsOn
-tasks.register("putOnSocks") {
-    doLast { println("Putting on socks.") }
+tasks.register<PutOnSocks>("putOnSocks") {
+    mustRunAfter("takeShower")
 }
 
-tasks.register("putOnShoes") {
+tasks.register<PutOnShoes>("putOnShoes") {
     dependsOn("putOnSocks")
-    doLast { println("Putting on shoes.") }
 }
 
 // finalizedBy
-tasks.register("eatBreakfast") {
+tasks.register<EatBreakfast>("eatBreakfast") {
     finalizedBy("brushYourTeeth")
-    doLast { println("Eating breakfast.") }
 }
 
-tasks.register("brushYourTeeth") {
-    doLast { println("Brushing teeth.") }
-}
+tasks.register<BrushYourTeeth>("brushYourTeeth")
 
 // mustRunAfter
-tasks.register("takeShower") {
-    doLast { println("Taking a shower.") }
-}
+tasks.register<TakeShower>("takeShower")
 
-tasks.register("putOnDeodorant") {
+tasks.register<PutOnDeodorant>("putOnDeodorant") {
     shouldRunAfter("takeShower")
-    doLast{ println("Putting on deodorant.") }
 }
 
 tasks.register("morningRoutine") {
-    dependsOn("takeShower", "putOnShoes", "eatBreakfast")
+    dependsOn("takeShower", "putOnDeodorant", "putOnShoes", "eatBreakfast")
 }
 
-// Problem - took a shower, after putting on socks and shoes!
-// Problem - took a shower but forgot deodorant
+abstract class PutOnSocks: DefaultTask() {
+    @TaskAction
+    fun putOnSocks() {
+        println("Putting on socks.")
+    }
+}
+
+abstract class PutOnShoes: DefaultTask() {
+    @TaskAction
+    fun putOnShoes() {
+        println("Putting on shoes.")
+    }
+}
+
+abstract class EatBreakfast: DefaultTask() {
+    @TaskAction
+    fun eatBreakfast() {
+        println("Eating breakfast.")
+    }
+}
+
+abstract class BrushYourTeeth: DefaultTask() {
+    @TaskAction
+    fun brushYourTeeth() {
+        println("Brushing teeth.")
+    }
+}
+
+abstract class TakeShower: DefaultTask() {
+    @TaskAction
+    fun takeShower() {
+        println("Taking a shower.")
+    }
+}
+
+abstract class PutOnDeodorant: DefaultTask() {
+    @TaskAction
+    fun putOnDeodorant() {
+        println("Putting on deodorant.")
+    }
+}
