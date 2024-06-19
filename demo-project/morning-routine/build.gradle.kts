@@ -34,6 +34,10 @@ tasks.register("morningRoutine") {
 }
 
 abstract class MorningRoutineTask: DefaultTask() {
+    override fun getGroup(): String {
+        return "Morning Routine"
+    }
+
     @Input
     lateinit var action: String
 
