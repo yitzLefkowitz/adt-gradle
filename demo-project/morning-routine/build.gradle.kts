@@ -1,23 +1,31 @@
 // dependsOn
-tasks.register<PutOnSocks>("putOnSocks") {
+tasks.register<MorningRoutineTask>("putOnSocks") {
+    action = "Putting on socks."
     mustRunAfter("takeShower")
 }
 
-tasks.register<PutOnShoes>("putOnShoes") {
+tasks.register("putOnShoes", MorningRoutineTask::class.java) {
+    action = "Putting on shoes."
     dependsOn("putOnSocks")
 }
 
 // finalizedBy
-tasks.register<EatBreakfast>("eatBreakfast") {
+tasks.register<MorningRoutineTask>("eatBreakfast") {
+    action = "Eating breakfast. Nom nom nom."
     finalizedBy("brushYourTeeth")
 }
 
-tasks.register<BrushYourTeeth>("brushYourTeeth")
+tasks.register<MorningRoutineTask>("brushYourTeeth") {
+    action = "Brushing teeth."
+}
 
 // mustRunAfter
-tasks.register<TakeShower>("takeShower")
+tasks.register<MorningRoutineTask>("takeShower") {
+    action = "Taking a shower."
+}
 
-tasks.register<PutOnDeodorant>("putOnDeodorant") {
+tasks.register<MorningRoutineTask>("putOnDeodorant") {
+    action = "Putting on deodorant."
     shouldRunAfter("takeShower")
 }
 
@@ -25,44 +33,12 @@ tasks.register("morningRoutine") {
     dependsOn("takeShower", "putOnDeodorant", "putOnShoes", "eatBreakfast")
 }
 
-abstract class PutOnSocks: DefaultTask() {
-    @TaskAction
-    fun putOnSocks() {
-        println("Putting on socks.")
-    }
-}
+abstract class MorningRoutineTask: DefaultTask() {
+    @Input
+    lateinit var action: String
 
-abstract class PutOnShoes: DefaultTask() {
     @TaskAction
-    fun putOnShoes() {
-        println("Putting on shoes.")
-    }
-}
-
-abstract class EatBreakfast: DefaultTask() {
-    @TaskAction
-    fun eatBreakfast() {
-        println("Eating breakfast.")
-    }
-}
-
-abstract class BrushYourTeeth: DefaultTask() {
-    @TaskAction
-    fun brushYourTeeth() {
-        println("Brushing teeth.")
-    }
-}
-
-abstract class TakeShower: DefaultTask() {
-    @TaskAction
-    fun takeShower() {
-        println("Taking a shower.")
-    }
-}
-
-abstract class PutOnDeodorant: DefaultTask() {
-    @TaskAction
-    fun putOnDeodorant() {
-        println("Putting on deodorant.")
+    fun doMorningStuff() {
+        println(action)
     }
 }
