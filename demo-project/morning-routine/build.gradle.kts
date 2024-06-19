@@ -33,7 +33,13 @@ tasks.register("morningRoutine") {
     dependsOn("takeShower", "putOnDeodorant", "putOnShoes", "eatBreakfast")
 }
 
+// todo why isnt the task called "morningRoutine" in the group?
+
 abstract class MorningRoutineTask: DefaultTask() {
+    override fun getGroup(): String {
+        return "Morning Routine"
+    }
+
     @Input
     lateinit var action: String
 
